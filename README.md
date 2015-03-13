@@ -1,40 +1,19 @@
 ## Installation
 
-As a standalone tool:
-
-    $ npm install -g corsproxy
-
-As a dependency:
-
-    $ npm install corsproxy
+git pull https://github.com/Malka/CORS-Proxy.git
 
 
 ## Running
 
 Standalone:
 
-    $ corsproxy
+    $ ./bin/index.js
     CORS Proxy started on localhost:9292
 
 Standalone with custom host/port:
 
-    $ corsproxy 0.0.0.0 1234
+    $ ./bin/index.js 0.0.0.0 1234
     CORS Proxy started on 0.0.0.0:1234
-
-As a dependency:
-
-    var cors_proxy = require("corsproxy");
-    var http_proxy = require("http-proxy");
-    http_proxy.createServer(cors_proxy).listen(1234);
-
-With custom target:
-
-    var cors_proxy = require("corsproxy");
-    var http_proxy = require("http-proxy");
-    cors_proxy.options = {
-         target: "http://0.0.0.0:5984"
-    };
-    http_proxy.createServer(cors_proxy).listen(1234);
 
 
 ## Usage
