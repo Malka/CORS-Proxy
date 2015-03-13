@@ -9,15 +9,15 @@ module.exports = (req, res, proxy) ->
     headers = req.headers['access-control-request-headers']
   else
     headers = 'accept, accept-charset, accept-encoding, accept-language, authorization, content-length, content-type, host, origin, proxy-connection, referer, user-agent, x-requested-with'
-    headers += ", #{header}" for header in req.headers when req.indexOf('x-') is 0
-
+    headers += ", #{header}" for header of req.headers 
+    
   cors_headers =
     'access-control-allow-methods'     : 'HEAD, POST, GET, PUT, PATCH, DELETE'
     'access-control-max-age'           : '86400' # 24 hours
     'access-control-allow-headers'     : headers
+    'Access-Control-Expose-Headers'    : headers
     'access-control-allow-credentials' : 'true'
     'access-control-allow-origin'      : req.headers.origin || '*'
-
 
   if req.method is 'OPTIONS'
     console.log 'responding to OPTIONS request'
@@ -32,6 +32,7 @@ module.exports = (req, res, proxy) ->
     module.exports.options = module.exports.options || {}
     if module.exports.options.target
       target0 = url.parse module.exports.options.target
+      console.log target0
       target = {
         host: target0.hostname,
         port: target0.port || 80
@@ -46,14 +47,14 @@ module.exports = (req, res, proxy) ->
         port: port || 80
       }
       req.headers.host = hostname
-      if target0.auth
+      if target0?.auth
          req.headers.authorization = 'Basic ' + new Buffer(target0.auth).toString('base64');
     unless target and target.host and target.port
       res.write "Cannot determine target host\n"
       res.end();
       return;
 
-    # console.log "proxying to #{target.host}:#{target.port}#{path}"
+    console.log "proxying to #{target.host}:#{target.port}#{path}"
 
 
     res.setHeader(key, value) for key, value of cors_headers
